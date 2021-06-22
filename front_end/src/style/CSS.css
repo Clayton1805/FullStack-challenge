@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+body {
+  /* background: #000000 url('../images/background_01.gif') center center no-repeat fixed;  */
+  background-color: #cccccc;
+  background-blend-mode: lighten;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.7)
+}
+
+.login-register {
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  margin-top: 30px;
+  width: 305px;
+}
+
+.login-register form {
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  margin: auto;
+  width: 305px;
+}
+
+.login-register form h1 {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.login-register form ul {
+  margin: 0px;
+  padding: 0px;
+}
+
+.login-register form label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14pt;
+  font-weight: 900;
+  text-align: center;
+}
+
+.login-register form input {
+  border: 2px solid #205527;
+  border-radius: 10px 0px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14pt;
+  height: 30px;
+  margin: 5px 0px;
+  text-align: center;
+  width: 300px;
+}
+
+.login-register form input:focus {
+  border: 3px solid #205527;
+  outline: none !important;
+}
+
+form button {
+  background-color: #205527;
+  border: none;
+  border-radius: 10px 0px;
+  color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16pt;
+  font-weight: 700;
+  height: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 305px;
+}
+
+form button:hover {
+  background-color: #008200;
+  cursor: pointer;
+}
+
+form button:disabled,
+form button:hover:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.bttn-text {
+  background-color: #ff4000;
+  font-size: 13pt;
+}
+
+.bttn-text:hover {
+  background-color: #ff6e3d;
+  cursor: pointer;
+}
+
+.checkbox {
+  align-items: center;
+  align-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 10px;
+  width: 305px;
+}
+
+.checkbox label {
+  margin-left: 100px;
+}
+
+.checkbox input {
+  margin-right:  -50px;
+}
+
+@media only screen and (min-width: 1000px) {
+  .login {
+    margin-top: 4vh;
+  }
+  
+  .login img {
+    margin-bottom: 4%;
+  }
+}
