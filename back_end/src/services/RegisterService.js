@@ -3,24 +3,21 @@ const { createToken } = require('../utils/JWT');
 const { User } = require('../models');
 
 const registerUser = async (data, res) => {
-  // console.log('chegou RegisterValidationEmailService')
-
   const user = await User.create(data);
-
   const { _id } = user;
   const token = createToken({ id: _id });
 
   res.status(OK).json({ name: data.name, token });
 };
 
-const RegisterDirector = (req, res) => {
+const RegisterDirector = async (req, res) => {
   // console.log('passou diretor')
   const {
     name,
     email,
     password,
   } = req.body;
-  registerUser(
+  await registerUser(
     {
       name,
       email,
@@ -31,13 +28,13 @@ const RegisterDirector = (req, res) => {
   );
 };
 
-const RegisterTeacher = (req, res) => {
+const RegisterTeacher = async (req, res) => {
   const {
     name,
     email,
     password,
   } = req.body;
-  registerUser(
+  await registerUser(
     {
       name,
       email,
@@ -48,7 +45,7 @@ const RegisterTeacher = (req, res) => {
   );
 };
 
-const RegisterStudent = (req, res) => {
+const RegisterStudent = async (req, res) => {
   const {
     name,
     email,
@@ -56,7 +53,7 @@ const RegisterStudent = (req, res) => {
     namesOfResponsibles,
     contacts,
   } = req.body;
-  registerUser(
+  await registerUser(
     {
       name,
       email,

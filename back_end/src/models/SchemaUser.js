@@ -7,6 +7,11 @@ const SchemaUser = mongoose.Schema({
   role: { type: String, required: true },
   namesOfResponsibles: [{ type: String }],
   contacts: [{ type: Number }],
+  observation: [{
+    teacherId: mongoose.Schema.Types.ObjectId,
+    date: { type: Date, default: Date.now },
+    text: { type: String },
+  }],
 });
 
 module.exports = mongoose.model('users', SchemaUser);
