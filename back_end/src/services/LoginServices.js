@@ -2,17 +2,17 @@ const { User } = require('../models');
 const { OK } = require('../utils/allStatusCode');
 const { createToken } = require('../utils/JWT');
 
-const LoginServices = async (req, res) => {
+const LoginService = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email, password });
 
   if (!user) return res.status(OK).json('E-mail ou Senha invalido');
 
-  const { _id, name } = user;
-  const token = createToken({ id: _id });
+  const { _id, name, role } = user;
+  const token = createToken({ id: _id, role });
 
-  res.status(OK).json({ name, token });
+  res.status(OK).json({ name, role, token });
 };
 
-module.exports = LoginServices;
+module.exports = LoginService;

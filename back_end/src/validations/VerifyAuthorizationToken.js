@@ -1,14 +1,14 @@
 const { tokenValidation } = require('../utils/JWT');
 const { UNAUTHORIZED } = require('../utils/allStatusCode');
 
-const VerifyAuthorization = (req, res, next) => {
-  const { authorization } = req.headers;
+const VerifyAuthorizationToken = (req, res, next) => {
+  const { authorization: token } = req.headers;
 
-  if (!authorization) {
+  if (!token) {
     return res.status(UNAUTHORIZED).json('missing auth token');
   }
 
-  const payload = tokenValidation(authorization);
+  const payload = tokenValidation(token);
   req.user = payload;
 
   if (!payload) return res.status(UNAUTHORIZED).json('jwt malformed');
@@ -16,4 +16,4 @@ const VerifyAuthorization = (req, res, next) => {
   next();
 };
 
-module.exports = VerifyAuthorization;
+module.exports = VerifyAuthorizationToken;

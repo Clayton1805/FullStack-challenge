@@ -1,11 +1,11 @@
 const MiddlewareReturnValidation = require('./MiddlewareReturnValidation');
 const {
-  validationsRegisterAll,
-  validationsRegisterStudent,
-} = require('./validationsRegister');
+  validationsRegisterUsersAll,
+  validationsRegisterUsersStudent,
+} = require('./validationsRegisterUsers');
 
 module.exports = {
   MiddlewareReturnValidation,
-  validationsRegisterAll,
-  validationsRegisterStudent,
+  validationsRegisterUsersAll,
+  validationsRegisterUsersStudent,
 };

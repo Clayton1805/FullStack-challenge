@@ -4,22 +4,24 @@ const { User } = require('../models');
 
 const registerUser = async (data, res) => {
   const user = await User.create(data);
-  const { _id } = user;
-  const token = createToken({ id: _id });
+  const { _id, name, role } = user;
+  const token = createToken({ id: _id, role });
 
-  res.status(OK).json({ name: data.name, token });
+  res.status(OK).json({ name, role, token });
 };
 
-const RegisterDirector = async (req, res) => {
+const RegisterUsersDirector = async (req, res) => {
   // console.log('passou diretor')
   const {
     name,
+    cpf,
     email,
     password,
   } = req.body;
   await registerUser(
     {
       name,
+      cpf,
       email,
       password,
       role: 'director',
@@ -28,15 +30,17 @@ const RegisterDirector = async (req, res) => {
   );
 };
 
-const RegisterTeacher = async (req, res) => {
+const RegisterUsersTeacher = async (req, res) => {
   const {
     name,
+    cpf,
     email,
     password,
   } = req.body;
   await registerUser(
     {
       name,
+      cpf,
       email,
       password,
       role: 'teacher',
@@ -45,9 +49,10 @@ const RegisterTeacher = async (req, res) => {
   );
 };
 
-const RegisterStudent = async (req, res) => {
+const RegisterUsersStudent = async (req, res) => {
   const {
     name,
+    cpf,
     email,
     password,
     namesOfResponsibles,
@@ -56,6 +61,7 @@ const RegisterStudent = async (req, res) => {
   await registerUser(
     {
       name,
+      cpf,
       email,
       password,
       namesOfResponsibles,
@@ -66,8 +72,20 @@ const RegisterStudent = async (req, res) => {
   );
 };
 
+const getUsersByRole = async (res, role) => {
+  const Users = await User.find({ role }, { name: 1 });
+
+  res.status(OK).json(Users);
+};
+
+const GetAllTeachers = async (_req, res) => { await getUsersByRole(res, 'teacher'); };
+
+const GetAllStudents = async (_req, res) => { await getUsersByRole(res, 'student'); };
+
 module.exports = {
-  RegisterStudent,
-  RegisterDirector,
-  RegisterTeacher,
+  RegisterUsersStudent,
+  RegisterUsersDirector,
+  RegisterUsersTeacher,
+  GetAllTeachers,
+  GetAllStudents,
 };

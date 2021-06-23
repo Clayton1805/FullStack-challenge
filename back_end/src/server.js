@@ -8,7 +8,8 @@ const app = express();
 
 const {
   LoginController,
-  RegisterController,
+  RegisterUsersController,
+  SchoolsController,
 } = require('./controllers');
 
 const { SERVER_ERROR } = require('./utils/allStatusCode');
@@ -30,7 +31,9 @@ app.use(express.json());
 
 app.use('/login', LoginController);
 
-app.use('/register', RegisterController);
+app.use('/users', RegisterUsersController);
+
+app.use('/schools', SchoolsController);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {

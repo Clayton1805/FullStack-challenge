@@ -1,7 +1,9 @@
 const { body } = require('express-validator');
 const { User } = require('../../models');
+const isValidCPF = require('../../utils/isValidCPF');
+const MiddlewareReturnValidation = require('./MiddlewareReturnValidation');
 
-const validationsRegisterAll = [
+const validationsRegisterUsersAll = [
   body('email')
     .notEmpty()
     .withMessage('precisa ser preenchido.')
@@ -15,6 +17,21 @@ const validationsRegisterAll = [
           return Promise.reject('já está cadastrado.');
         }
       })),
+  body('cpf')
+    .notEmpty()
+    .withMessage('precisa ser preenchido.')
+    .bail()
+    .isString()
+    .withMessage('tem que ser uma string.')
+    .bail()
+    .custom((cpf) => {
+      const oi = !isValidCPF(cpf);
+      console.log('entrou', oi);
+      if (oi) {
+        throw new Error('cpf invalido.');
+      }
+      return true;
+    }),
   body('name')
     .notEmpty()
     .withMessage('precisa ser preenchido.')
@@ -29,12 +46,13 @@ const validationsRegisterAll = [
     .bail()
     .isLength({ min: 6 })
     .withMessage('precisa ter mais de 5 caracteres.'),
+  MiddlewareReturnValidation,
 ];
 
-const validationsRegisterStudent = [
+const validationsRegisterUsersStudent = [
   body('namesOfResponsibles')
     .notEmpty()
-    .withMessage('precisa ser preenchida.'),
+    .withMessage('no minimo 1 responsável precisa ser preenchido.'),
   body('namesOfResponsibles.*')
     .matches(/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s]+$/)
     .withMessage('só aceita letras.')
@@ -42,7 +60,7 @@ const validationsRegisterStudent = [
     .withMessage('não pode ter espaços em branco no fim ou no começo.'),
   body('contacts')
     .notEmpty()
-    .withMessage('precisa ser preenchida.'),
+    .withMessage('no minimo 1 numero de telefone precisa ser preenchido.'),
   body('contacts.*')
     .isInt()
     .withMessage('só aceita números.')
@@ -51,6 +69,6 @@ const validationsRegisterStudent = [
 ];
 
 module.exports = {
-  validationsRegisterAll,
-  validationsRegisterStudent,
+  validationsRegisterUsersAll,
+  validationsRegisterUsersStudent,
 };
