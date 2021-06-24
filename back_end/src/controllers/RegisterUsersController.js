@@ -9,36 +9,33 @@ const {
   GetAllStudents,
 } = require('../services/RegisterUsersServices');
 const {
-  MiddlewareReturnValidation,
-  validationsRegisterUsersAll,
-  validationsRegisterUsersStudent,
-} = require('../validations/express-validator');
-const VerifyAuthorizationToken = require('../validations/VerifyAuthorizationToken');
+  ValidationsUsers,
+  ValidationsUsersStudent,
+} = require('../validations/express-validator/ValidationsUsers');
+const {
+  ValidationsTokenIsDirector,
+} = require('../validations/express-validator/ValidattionsTokenAuthorization');
 
 const RegisterUsersController = new Router();
 
 RegisterUsersController.post('/director',
-  validationsRegisterUsersAll,
-  // rescue(MiddlewareReturnValidation),
+  ValidationsUsers,
   rescue(RegisterUsersDirector));
 
 RegisterUsersController.post('/teacher',
-  validationsRegisterUsersAll,
-  rescue(MiddlewareReturnValidation),
+  ValidationsUsers,
   rescue(RegisterUsersTeacher));
 
 RegisterUsersController.get('/teacher',
-  VerifyAuthorizationToken,
+  ValidationsTokenIsDirector,
   rescue(GetAllTeachers));
 
 RegisterUsersController.post('/student',
-  validationsRegisterUsersAll,
-  validationsRegisterUsersStudent,
-  rescue(MiddlewareReturnValidation),
+  ValidationsUsersStudent,
   rescue(RegisterUsersStudent));
 
 RegisterUsersController.get('/student',
-  VerifyAuthorizationToken,
+  ValidationsTokenIsDirector,
   rescue(GetAllStudents));
 
 module.exports = RegisterUsersController;

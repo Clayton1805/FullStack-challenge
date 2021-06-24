@@ -10,6 +10,7 @@ const {
   LoginController,
   RegisterUsersController,
   SchoolsController,
+  ClassesController,
 } = require('./controllers');
 
 const { SERVER_ERROR } = require('./utils/allStatusCode');
@@ -34,6 +35,8 @@ app.use('/login', LoginController);
 app.use('/users', RegisterUsersController);
 
 app.use('/schools', SchoolsController);
+
+app.use('/classes', ClassesController);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, _req, res, _next) => {

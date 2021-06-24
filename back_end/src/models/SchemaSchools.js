@@ -13,7 +13,7 @@ const SchemaSchools = mongoose.Schema({
       date: { type: Date, default: Date.now },
       text: { type: String, required: true },
     }],
-    studentsId: [{ type: mongoose.Schema.Types.ObjectId, unique: true }],
+    studentsId: [{ type: mongoose.Schema.Types.ObjectId }],
   }],
 });
 

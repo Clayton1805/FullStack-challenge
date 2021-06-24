@@ -1,9 +1,9 @@
 const { body } = require('express-validator');
 const { User } = require('../../models');
 const isValidCPF = require('../../utils/isValidCPF');
-const MiddlewareReturnValidation = require('./MiddlewareReturnValidation');
+const { ErrorResponseBadRequest } = require('./ErrorResponse');
 
-const validationsRegisterUsersAll = [
+const validationsUsersGeneric = [
   body('email')
     .notEmpty()
     .withMessage('precisa ser preenchido.')
@@ -25,16 +25,24 @@ const validationsRegisterUsersAll = [
     .withMessage('tem que ser uma string.')
     .bail()
     .custom((cpf) => {
-      const oi = !isValidCPF(cpf);
-      console.log('entrou', oi);
-      if (oi) {
+      if (!isValidCPF(cpf)) {
         throw new Error('cpf invalido.');
       }
       return true;
-    }),
+    })
+    .bail()
+    .custom((cpf) => User.find({ cpf })
+      .then((user) => {
+        if (user.length !== 0) {
+          return Promise.reject('já está cadastrado.');
+        }
+      })),
   body('name')
     .notEmpty()
     .withMessage('precisa ser preenchido.')
+    .bail()
+    .isString()
+    .withMessage('tem que ser uma string.')
     .bail()
     .matches(/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s]+$/)
     .withMessage('só aceita letras.')
@@ -44,12 +52,20 @@ const validationsRegisterUsersAll = [
     .notEmpty()
     .withMessage('precisa ser preenchida.')
     .bail()
+    .isString()
+    .withMessage('tem que ser uma string.')
+    .bail()
     .isLength({ min: 6 })
     .withMessage('precisa ter mais de 5 caracteres.'),
-  MiddlewareReturnValidation,
 ];
 
-const validationsRegisterUsersStudent = [
+const ValidationsUsers = [
+  ...validationsUsersGeneric,
+  ErrorResponseBadRequest,
+];
+
+const ValidationsUsersStudent = [
+  ...validationsUsersGeneric,
   body('namesOfResponsibles')
     .notEmpty()
     .withMessage('no minimo 1 responsável precisa ser preenchido.'),
@@ -62,13 +78,12 @@ const validationsRegisterUsersStudent = [
     .notEmpty()
     .withMessage('no minimo 1 numero de telefone precisa ser preenchido.'),
   body('contacts.*')
-    .isInt()
-    .withMessage('só aceita números.')
     .isLength({ min: 11, max: 11 })
     .withMessage('tem que ser composto por 11 números.'),
+  ErrorResponseBadRequest,
 ];
 
 module.exports = {
-  validationsRegisterUsersAll,
-  validationsRegisterUsersStudent,
+  ValidationsUsers,
+  ValidationsUsersStudent,
 };

@@ -73,7 +73,7 @@ const RegisterUsersStudent = async (req, res) => {
 };
 
 const getUsersByRole = async (res, role) => {
-  const Users = await User.find({ role }, { name: 1 });
+  const Users = await User.find({ role }, { name: 1, cpf: 1 });
 
   res.status(OK).json(Users);
 };
