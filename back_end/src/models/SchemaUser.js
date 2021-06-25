@@ -9,7 +9,7 @@ const SchemaUser = mongoose.Schema({
   namesOfResponsibles: [{ type: String }],
   contacts: [{ type: Number }],
   observation: [{
-    teacherId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    teacherId: { type: String, required: true },
     date: { type: Date, default: Date.now },
     text: { type: String, required: true },
   }],

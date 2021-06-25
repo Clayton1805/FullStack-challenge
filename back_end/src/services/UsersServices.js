@@ -11,7 +11,6 @@ const registerUser = async (data, res) => {
 };
 
 const RegisterUsersDirector = async (req, res) => {
-  // console.log('passou diretor')
   const {
     name,
     cpf,
@@ -82,10 +81,17 @@ const GetAllTeachers = async (_req, res) => { await getUsersByRole(res, 'teacher
 
 const GetAllStudents = async (_req, res) => { await getUsersByRole(res, 'student'); };
 
+const GetUserById = async (req, res) => {
+  const { idUser } = req.query;
+  const user = await User.findById(idUser, { name: 1, cpf: 1 });
+  res.status(OK).json(user);
+};
+
 module.exports = {
   RegisterUsersStudent,
   RegisterUsersDirector,
   RegisterUsersTeacher,
   GetAllTeachers,
   GetAllStudents,
+  GetUserById,
 };

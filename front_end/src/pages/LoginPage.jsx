@@ -5,7 +5,7 @@ import axios from 'axios';
 import AMaisAppContext from '../context/AMaisAppContext';
 import { DOMAIN } from '../config';
 
-import '../style/CSS.css';
+import '../style/forms.css';
 
 function LoginPage() {
   const history = useHistory();
@@ -27,12 +27,12 @@ function LoginPage() {
       inputValues,
     ).then(({ data }) =>{
       setUser(data)
-      history.push('/sorteio');
+      history.push('/escolas');
     }).catch(({ response }) => {
       if (response) {
         return setErrMessage(response.data);
       }
-    })
+    });
   };
 
   const redirectCadastro = () => history.push('/cadastro');
@@ -67,11 +67,11 @@ function LoginPage() {
           id="enter"
           type="button"
           onClick={ handleClick }
+          className="bttn_submit"
         >
           Entrar
         </button>
         <button
-          id="sign-up"
           type="button"
           onClick={ redirectCadastro }
           className="bttn-text"

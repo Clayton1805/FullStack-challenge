@@ -7,7 +7,7 @@ const {
   RegisterUsersStudent,
   GetAllTeachers,
   GetAllStudents,
-} = require('../services/RegisterUsersServices');
+} = require('../services/UsersServices');
 const {
   ValidationsUsers,
   ValidationsUsersStudent,
@@ -16,26 +16,26 @@ const {
   ValidationsTokenIsDirector,
 } = require('../validations/express-validator/ValidattionsTokenAuthorization');
 
-const RegisterUsersController = new Router();
+const UsersController = new Router();
 
-RegisterUsersController.post('/director',
+UsersController.post('/director',
   ValidationsUsers,
   rescue(RegisterUsersDirector));
 
-RegisterUsersController.post('/teacher',
+UsersController.post('/teacher',
   ValidationsUsers,
   rescue(RegisterUsersTeacher));
 
-RegisterUsersController.get('/teacher',
+UsersController.get('/teacher',
   ValidationsTokenIsDirector,
   rescue(GetAllTeachers));
 
-RegisterUsersController.post('/student',
+UsersController.post('/student',
   ValidationsUsersStudent,
   rescue(RegisterUsersStudent));
 
-RegisterUsersController.get('/student',
+UsersController.get('/student',
   ValidationsTokenIsDirector,
   rescue(GetAllStudents));
 
-module.exports = RegisterUsersController;
+module.exports = UsersController;

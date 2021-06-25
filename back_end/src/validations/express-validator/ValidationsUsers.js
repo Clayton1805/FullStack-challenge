@@ -70,6 +70,10 @@ const ValidationsUsersStudent = [
     .notEmpty()
     .withMessage('no minimo 1 responsável precisa ser preenchido.'),
   body('namesOfResponsibles.*')
+    .isString()
+    .withMessage('tem que ser uma string.')
+    .bail()
+    .if((value) => value)
     .matches(/^[a-zA-ZáàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ\s]+$/)
     .withMessage('só aceita letras.')
     .matches(/^[^\s]+(\s+[^\s]+)*$/)
@@ -78,6 +82,10 @@ const ValidationsUsersStudent = [
     .notEmpty()
     .withMessage('no minimo 1 numero de telefone precisa ser preenchido.'),
   body('contacts.*')
+    .matches(/^[0-9]*$/)
+    .withMessage('tem que ser um numero.')
+    .bail()
+    .if((value) => value)
     .isLength({ min: 11, max: 11 })
     .withMessage('tem que ser composto por 11 números.'),
   ErrorResponseBadRequest,

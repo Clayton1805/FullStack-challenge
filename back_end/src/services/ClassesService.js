@@ -1,4 +1,5 @@
-const { Schools } = require('../models');
+const { ObjectId } = require('mongoose').Types;
+const { Schools, User } = require('../models');
 const { OK } = require('../utils/allStatusCode');
 const { getTokenPayload } = require('../utils/JWT');
 
@@ -29,8 +30,34 @@ const AddClass = async (req, res) => {
 };
 
 const GetAllClasses = async (req, res) => {
-  const { idSchool } = req.body;
-  const { classes } = await Schools.findOne({ _id: idSchool }, { classes: 1 });
+  const { idSchool } = req.query;
+  const { classes } = await Schools.findOne({ _id: idSchool }, {
+    'classes._id': 1,
+    'classes.grade': 1,
+    'classes.className': 1,
+  });
+  res.status(OK).json(classes);
+};
+
+const GetDetailClass = async (req, res) => {
+  const { idSchool, idClass } = req.query;
+  const [{ classes }] = await Schools.aggregate([
+    { $match: { _id: ObjectId(idSchool) } },
+    { $project: { _id: 0, classes: 1 } },
+    { $unwind: '$classes' },
+    { $match: { 'classes._id': ObjectId(idClass) } },
+  ]);
+  const students = await User.find({ _id: { $in: classes.studentsId } }, {
+    name: 1,
+    cpf: 1,
+    namesOfResponsibles: 1,
+    teacher: 1,
+    observation: 1,
+  });
+  classes.students = students;
+  const teacher = await User.findOne({ _id: classes.teacherId }, { name: 1, cpf: 1 });
+  classes.teacher = teacher;
+
   res.status(OK).json(classes);
 };
 
@@ -130,6 +157,26 @@ const AddObservationClass = async (req, res) => {
   res.status(OK).json();
 };
 
+const AddObservationStudent = async (req, res) => {
+  const {
+    studentsId,
+    text,
+  } = req.body;
+  const { authorization: token } = req.headers;
+  const { id } = getTokenPayload(token);
+
+  await User.updateOne({ _id: studentsId }, {
+    $push: {
+      observation: {
+        teacherId: id,
+        text,
+      },
+    },
+  });
+
+  res.status(OK).json();
+};
+
 module.exports = {
   GetAllClasses,
   AddClass,
@@ -138,4 +185,6 @@ module.exports = {
   AddStudents,
   DeleteStudents,
   AddObservationClass,
+  GetDetailClass,
+  AddObservationStudent,
 };

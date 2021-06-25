@@ -12,7 +12,6 @@ const {
 const {
   ValidationsAddClass,
   ValidationsUpdateClass,
-  ValidationIdSchool,
   ValidationDeleteClass,
   ValidationsAddClassStudents,
   ValidationsObservationClass,
@@ -26,6 +25,8 @@ const {
   AddStudents,
   DeleteStudents,
   AddObservationClass,
+  GetDetailClass,
+  AddObservationStudent,
 } = require('../services/ClassesService');
 
 const ClassesController = new Router();
@@ -38,8 +39,11 @@ ClassesController.post('/',
 
 ClassesController.get('/',
   ValidationsToken,
-  ValidationIdSchool,
   rescue(GetAllClasses));
+
+ClassesController.get('/details',
+  ValidationsToken,
+  rescue(GetDetailClass));
 
 ClassesController.put('/',
   ValidationsTokenIsDirector,
@@ -75,6 +79,6 @@ ClassesController.post('/observationStudent',
   ValidationsTokenIsTeacher,
   ValidationsObservationStudent,
   ValidationsTeacherHasStudent,
-  rescue(DeleteStudents));
+  rescue(AddObservationStudent));
 
 module.exports = ClassesController;

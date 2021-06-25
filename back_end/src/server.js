@@ -8,7 +8,7 @@ const app = express();
 
 const {
   LoginController,
-  RegisterUsersController,
+  UsersController,
   SchoolsController,
   ClassesController,
 } = require('./controllers');
@@ -32,7 +32,7 @@ app.use(express.json());
 
 app.use('/login', LoginController);
 
-app.use('/users', RegisterUsersController);
+app.use('/users', UsersController);
 
 app.use('/schools', SchoolsController);
 
